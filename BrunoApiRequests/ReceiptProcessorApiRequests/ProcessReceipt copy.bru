@@ -1,0 +1,15 @@
+meta {
+  name: ProcessReceipt copy
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BaseUrl}}/receipts/{{Receipt_Id}}/points
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  Receipt_Id: 2573448d-8ecc-4ce4-a452-f3c1e0929a64
+}

@@ -1,0 +1,35 @@
+meta {
+  name: ProcessReceipt - M&M Corner Market Example
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{BaseUrl}}/receipts/process
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "retailer": "M&M Corner Market",
+    "purchaseDate": "2022-03-20",
+    "purchaseTime": "14:33",
+    "items": [
+      {
+        "shortDescription": "Gatorade",
+        "price": "2.25"
+      },{
+        "shortDescription": "Gatorade",
+        "price": "2.25"
+      },{
+        "shortDescription": "Gatorade",
+        "price": "2.25"
+      },{
+        "shortDescription": "Gatorade",
+        "price": "2.25"
+      }
+    ],
+    "total": "9.00"
+  }
+}
