@@ -7,7 +7,7 @@ public interface IReceiptRepository : IDisposable
 {
     Task InsertReceipt(Receipt receipt);
     Task InsertReceiptLines(List<ReceiptLineItem> receiptLines);
-    Task<Receipt> GetReceiptById(Guid receiptId);
+    Task<Receipt?> GetReceiptById(Guid receiptId);
     Task<List<ReceiptLineItem>> GetReceiptLinesByReceiptId(Guid receiptId);
     Task Save();
 }
@@ -43,15 +43,15 @@ public class ReceiptRepository : IReceiptRepository, IDisposable
 #endregion Disposable implementation
 
 
-    public async Task<Receipt> GetReceiptById(Guid receiptId)
+    public async Task<Receipt?> GetReceiptById(Guid receiptId)
     {
         var receipt = await _context.Receipts.FindAsync(receiptId);
         return receipt;
     }
     public async Task<List<ReceiptLineItem>> GetReceiptLinesByReceiptId(Guid receiptId)
     {
-        var receiptLines = _context.ReceiptLines.Where(receiptLine =>
-            receiptLine.ReceiptId == receiptId).ToList();
+        var receiptLines =  await _context.ReceiptLines.Where(receiptLine =>
+            receiptLine.ReceiptId == receiptId).ToListAsync();
         return receiptLines;
     }
 

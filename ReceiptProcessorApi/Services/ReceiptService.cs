@@ -8,7 +8,7 @@ namespace ReceiptProcessorApi.Services;
 public interface IReceiptService
 {
     public Task<ProcessReceiptResponse> ProcessReceipt(ReceiptPayload receipt);
-    public Task<GetPointsResponse> GetPoints(Guid receiptId);
+    public Task<GetPointsResponse?> GetPoints(Guid receiptId);
 }
 
 public class ReceiptService : IReceiptService
@@ -44,11 +44,14 @@ public class ReceiptService : IReceiptService
         return response;
     }
 
-    public async Task<GetPointsResponse> GetPoints(Guid receiptId)
+    public async Task<GetPointsResponse?> GetPoints(Guid receiptId)
     {
         _logger.LogInformation("Calculating points for receipt");
         var receipt = await _receiptRepository.GetReceiptById(receiptId);
         var receiptLines = await _receiptRepository.GetReceiptLinesByReceiptId(receiptId);
+
+        if(receipt == null)
+            return null;
 
         _logger.LogInformation("Found receipt for given id: {Receipt}", receipt);
 
