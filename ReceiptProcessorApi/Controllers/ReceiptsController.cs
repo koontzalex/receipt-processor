@@ -29,7 +29,7 @@ namespace ReceiptProcessorApi.Controllers
 
             if (response == null)
             {
-                return NotFound();
+                return NotFound("No receipt found for that ID.");
             }
 
             return Ok(response);
@@ -39,14 +39,21 @@ namespace ReceiptProcessorApi.Controllers
         [HttpPost("process")]
         public async Task<ActionResult<ProcessReceiptResponse>> ProcessReceipt(ReceiptPayload receipt)
         {
-            var response = await _receiptService.ProcessReceipt(receipt);
-            
-            if (response == null)
+            try
             {
-                return BadRequest();
-            }
+                var response = await _receiptService.ProcessReceipt(receipt);
+                
+                if (response == null)
+                {
+                    return BadRequest("The receipt is invalid.");
+                }
 
-            return CreatedAtAction(nameof(ProcessReceipt), response);
+                return CreatedAtAction(nameof(ProcessReceipt), response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("The receipt is invalid.");
+            }
         }
     }
 }
